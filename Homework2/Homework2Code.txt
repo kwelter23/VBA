@@ -1,4 +1,4 @@
-Sub Homework2()
+Sub Homework()
 
     
     Dim Count As Integer
@@ -21,11 +21,10 @@ Sub Homework2()
     Dim HighestDecrease As Double
     Dim IncreaseTicker As String
     Dim DecreaseTicker As String
-
-       
-        
+ 
     'Loop Through Worksheets
-    For Each ws In ThisWorkbook.Worksheets
+    For Each ws In Worksheets
+    
         'Column Labels
         ws.Cells(1, 9).Value = "Ticker"
         ws.Cells(1, 10).Value = "Yearly Change"
@@ -36,16 +35,19 @@ Sub Homework2()
         ws.Cells(4, 14).Value = "Greatest Volume"
         ws.Cells(3, 14).Value = "Greatest Percent Increase"
         ws.Cells(2, 14).Value = "Greatest Percent Decrease"
+        
+        'Resetting Variables at start of each worksheet
         Count = 1
+
+        Total = 0
+        
             
         'Last Row/Count number of rows
         LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
         Opening = ws.Cells(2, 3).Value
                   
-        'Adds Total Stock Volume, Percent Change and Yearly Change
+        'For loop to add Total Stock Volume, Percent Change and Yearly Change
         For i = 2 To LastRow
-                      
-                        
             Total = Total + ws.Cells(i, 7).Value
             CurrentCell = ws.Cells(i, 1).Value
             NextCell = ws.Cells(i + 1, 1).Value
@@ -61,12 +63,13 @@ Sub Homework2()
                     PercentChange = 0
                 End If
                 
-                
-                ws.Cells(Count, 9) = CurrentCell
+                'Put in to cells
+                ws.Cells(Count, 9).Value = CurrentCell
                 ws.Cells(Count, 10).Value = YearlyChange
                 ws.Cells(Count, 11).Value = PercentChange
                 ws.Cells(Count, 12).Value = Total
                 
+                'Calculate Highest Decrease and Increase
                 If Total > HighestTotal Then
                     HighestTotal = Total
                     HighestTicker = CurrentCell
@@ -83,23 +86,32 @@ Sub Homework2()
                 End If
                                 
                 Total = 0
-                Opening = Cells(i + 1, 3).Value
+                PercentChange = 0
+                YearlyChange = 0
+                Opening = ws.Cells(i + 1, 3).Value
             
-                
             End If
             
         Next i
             
-'Calculate Greatest
-    ws.Cells(4, 15).Value = HighestTicker
-    ws.Cells(4, 16).Value = HighestTotal
-    ws.Cells(2, 16).Value = HighestDecrease
-    ws.Cells(2, 15).Value = DecreaseTicker
-    ws.Cells(3, 16).Value = HighestIncrease
-    ws.Cells(3, 15).Value = IncreaseTicker
-           
-            
-    Next ws
- 
+        'Print Greatest Decrease and Increase
+        ws.Cells(4, 15).Value = HighestTicker
+        ws.Cells(4, 16).Value = HighestTotal
+        ws.Cells(2, 16).Value = HighestDecrease
+        ws.Cells(2, 15).Value = DecreaseTicker
+        ws.Cells(3, 16).Value = HighestIncrease
+        ws.Cells(3, 15).Value = IncreaseTicker
+
+        HighestTotal = 0
+        HighestTicker = ""
+        HighestDecrease = 0
+        DecreaseTicker = ""
+        HighestIncrease = 0
+        IncreaseTicker = ""
     
+    Next ws
+    
+       
 End Sub
+
+
